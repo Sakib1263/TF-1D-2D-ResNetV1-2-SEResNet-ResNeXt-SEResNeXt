@@ -6,7 +6,4 @@ The models in this repository have been built following the original paper's imp
 2. ResNet32
 3. ResNet50
 4. ResNet101
-5. ResNet152
-
-Overview of all the architectures from the original document is as follows:  
-![alt text] (C:/Users/Sakib Mahmud/Desktop/Sakib Mahmud/Study and Research/GitHub/Images/ResNet.png "ResNet")
+5. ResNet152  
