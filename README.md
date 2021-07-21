@@ -8,4 +8,5 @@ The models in this repository have been built following the original paper's imp
 4. ResNet101
 5. ResNet152  
 
-![ResNet Architecture Params](Sakib1263/1DResNet-KERAS/blob/main/Documents/ResNet.png "ResNet Parameters")
+# ResNet Architectures
+![ResNet Architecture Params](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/ResNet.png "ResNet Parameters")
