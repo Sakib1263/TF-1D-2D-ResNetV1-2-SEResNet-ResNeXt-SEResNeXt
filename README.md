@@ -8,5 +8,5 @@ The models in this repository have been built following the original paper's imp
 4. ResNet101
 5. ResNet152
 
-Overview of all the architectures from the original document is as follows:
+Overview of all the architectures from the original document is as follows:  
 ![ResNet Params](C:/Users/Sakib Mahmud/Desktop/Sakib Mahmud/Study and Research/GitHub/Images/ResNet.png "ResNet")
