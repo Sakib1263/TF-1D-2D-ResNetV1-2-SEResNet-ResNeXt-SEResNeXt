@@ -7,3 +7,5 @@ The models in this repository have been built following the original paper's imp
 3. ResNet50
 4. ResNet101
 5. ResNet152  
+
+![ResNet Architecture Params]("Documents/ResNet.png "ResNet Parameters")
