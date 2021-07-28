@@ -165,25 +165,25 @@ def learner152(inputs, num_filters):
     return out
 
 
+# Construct the Classifier
 def classifier(inputs, n_classes):
-    # Construct the Classifier
-    # inputs         : input vector
+    # inputs    : input vector
     # n_classes : number of output classes
-    # Pool at the end of all the convolutional residual blocks
+    # Global Average Pooling at the end of all the convolutional residual blocks (Option: GlobalMaxPooling)
     x = GlobalAveragePooling1D()(inputs)
-    # Final Dense Outputting Layer for the outputs
-    out = Dense(n_classes, activation='softmax')(x)
+    # Fully-Connected Dense Layer for the final outputs
+    out = Dense(n_classes, activation='softmax')(x) # Softmax Activation for Classification
     return out
 
 
+# Construct the Regressor
 def regressor(inputs, feature_number):
-    # Construct the Regressor
-    # inputs         : input vector
+    # inputs    : input vector
     # n_classes : number of output features
-    # Pool at the end of all the convolutional residual blocks
+    # Global Average Pooling at the end of all the convolutional residual blocks (Option: GlobalMaxPooling)
     x = GlobalAveragePooling1D()(inputs)
-    # Final Dense Outputting Layer for the outputs
-    out = Dense(feature_number, activation='linear')(x)
+    # Fully-Connected Dense Layer for the final outputs
+    out = Dense(feature_number, activation='linear')(x) # Linear Activation for Regression
     return out
 
 class ResNet:
