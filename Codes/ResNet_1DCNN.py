@@ -1,3 +1,4 @@
+# Import Necessary Libraries
 from keras.models import Model
 from keras.layers import Input, Conv1D, MaxPooling1D, GlobalAveragePooling1D, Add, Dense
 from keras.layers import BatchNormalization, Activation
@@ -14,8 +15,8 @@ def stem(inputs, num_filters):
 
 def conv_block(inputs, n_filters):
     # Construct Block of Convolutions without Pooling
-    # x        : input into the block
-    # n_filters: number of filters
+    # inputs        : input into the block
+    # n_filters: number of kerels or filters
     conv = Conv1D(n_filters, 3, strides=2, padding="same", kernel_initializer="he_normal")(inputs)
     conv = BatchNormalization()(conv)
     conv = Activation('relu')(conv)
@@ -27,8 +28,8 @@ def conv_block(inputs, n_filters):
 
 def residual_block(inputs, n_filters):
     # Construct a Residual Block of Convolutions
-    # x        : input into the block
-    # n_filters: number of filters
+    # inputs   : input into the block
+    # n_filters: number of kerels or filters
     shortcut = inputs
     #
     conv = Conv1D(n_filters, 3, strides=1, padding="same", kernel_initializer="he_normal")(inputs)
@@ -43,22 +44,22 @@ def residual_block(inputs, n_filters):
 
 
 def residual_group(inputs, n_filters, n_blocks, conv=True):
-    # x        : input to the group
-    # n_filters: number of filters
-    # n_blocks : number of blocks in the group
+    # inputs   : input to the group
+    # n_filters: number of kernels or filters
+    # n_blocks : number of blocks in the group (varies accross ResNet Models)
     # conv     : flag to include the convolution block connector
     out = []
     for _ in range(n_blocks):
         out = residual_block(inputs, n_filters)
 
-    # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
+    # Double the size of filters and reduce feature maps by 75% (strides=2) to fit the next Residual Group
     if conv:
         out = conv_block(out, n_filters * 2)
     return out
 
 
 def learner18(inputs, num_filters):
-    # Construct the Learner
+    # Construct the Learner for ResNet18
     x = residual_group(inputs, num_filters, 2)          # First Residual Block Group of 64 filters
     x = residual_group(x, num_filters * 2, 1)           # Second Residual Block Group of 128 filters
     x = residual_group(x, num_filters * 4, 1)           # Third Residual Block Group of 256 filters
@@ -67,7 +68,7 @@ def learner18(inputs, num_filters):
 
 
 def learner34(inputs, num_filters):
-    # Construct the Learner
+    # Construct the Learner for ResNet34
     x = residual_group(inputs, num_filters, 3)          # First Residual Block Group of 64 filters
     x = residual_group(x, num_filters * 2, 3)           # Second Residual Block Group of 128 filters
     x = residual_group(x, num_filters * 4, 5)           # Third Residual Block Group of 256 filters
@@ -85,9 +86,10 @@ def stem_bottleneck(inputs, num_filters):
 
 
 def conv_block_bottleneck(inputs, n_filters):
-    # Construct Block of Convolutions without Pooling
-    # x        : input into the block
-    # n_filters: number of filters
+    # Construct Block of Convolutions without Pooling - BottleNeck Structure for ResNet50, ResNet101 and ResNet152
+    # Read the Paper for More Information
+    # inputs   : input into the block
+    # n_filters: number of kernels or filters
     conv = Conv1D(n_filters, 3, strides=2, padding="same", kernel_initializer="he_normal")(inputs)
     conv = BatchNormalization()(conv)
     conv = Activation('relu')(conv)
@@ -101,9 +103,9 @@ def conv_block_bottleneck(inputs, n_filters):
 
 
 def residual_block_bottleneck(inputs, n_filters):
-    # Construct a Residual Block of Convolutions
-    # x        : input into the block
-    # n_filters: number of filters
+    # Construct a Residual Block of Convolutions - BottleNeck Structure
+    # inputs   : input into the block
+    # n_filters: number of kernels or filters
     shortcut = Conv1D(n_filters * 4, 1, strides=1, padding="same", kernel_initializer="he_normal")(inputs)
     shortcut = BatchNormalization()(shortcut)
     #
@@ -122,15 +124,15 @@ def residual_block_bottleneck(inputs, n_filters):
 
 
 def residual_group_bottleneck(inputs, n_filters, n_blocks, conv=True):
-    # x        : input to the group
-    # n_filters: number of filters
-    # n_blocks : number of blocks in the group
+    # inputs   : input to the group
+    # n_filters: number of filters or kernels
+    # n_blocks : number of blocks in the group, varies among ResNet Models
     # conv     : flag to include the convolution block connector
     out = []
     for _ in range(n_blocks):
         out = residual_block_bottleneck(inputs, n_filters)
 
-    # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
+    # Double the size of filters and reduce feature maps by 75% (strides=2) to fit the next Residual Group
     if conv:
         out = conv_block_bottleneck(out, n_filters * 2)
     return out
@@ -164,8 +166,8 @@ def learner152(inputs, num_filters):
 
 
 def classifier(inputs, n_classes):
-    # Construct the Classifier Group
-    # x         : input vector
+    # Construct the Classifier
+    # inputs         : input vector
     # n_classes : number of output classes
     # Pool at the end of all the convolutional residual blocks
     x = GlobalAveragePooling1D()(inputs)
@@ -175,9 +177,9 @@ def classifier(inputs, n_classes):
 
 
 def regressor(inputs, feature_number):
-    # Construct the Regressor Group
-    # x         : input vector
-    # n_classes : number of output classes
+    # Construct the Regressor
+    # inputs         : input vector
+    # n_classes : number of output features
     # Pool at the end of all the convolutional residual blocks
     x = GlobalAveragePooling1D()(inputs)
     # Final Dense Outputting Layer for the outputs
@@ -188,15 +190,15 @@ class ResNet:
     def __init__(self, length, num_channel, num_filters, problem_type='Regression', output_nums=1024):
         self.length = length
         self.num_channel = num_channel
-        self.num_filters = num_filters
+        self.num_filters = num_filters # num_filters = 64 [Default]
         self.problem_type = problem_type
         self.output_nums = output_nums
+        
     def ResNet18(self):
-        # num_filters = 64 [Default]
         outputs = []
         inputs = Input((self.length, self.num_channel))  # The input tensor
-        x = stem(inputs, self.num_filters)        # The Stem Convolution Group
-        x = learner18(x, self.num_filters)        # The learner
+        x = stem(inputs, self.num_filters)               # The Stem Convolution Group
+        x = learner18(x, self.num_filters)               # The learner
         # Problem Types
         if self.problem_type == 'Classification':
             # The Classifier for n classes
@@ -212,11 +214,10 @@ class ResNet:
 
 
     def ResNet34(self):
-        # num_filters = 64 [Default]
         outputs = []
         inputs = Input((self.length, self.num_channel))  # The input tensor
-        x = stem(inputs, self.num_filters)        # The Stem Convolution Group
-        x = learner34(x, self.num_filters)        # The learner
+        x = stem(inputs, self.num_filters)               # The Stem Convolution Group
+        x = learner34(x, self.num_filters)               # The learner
         # Problem Types
         if self.problem_type == 'Classification':
             # The Classifier for n classes
@@ -232,9 +233,8 @@ class ResNet:
 
 
     def ResNet50(self):
-        # num_filters = 64 [Default]
         outputs = []
-        inputs = Input((self.length, self.num_channel))          # The input tensor
+        inputs = Input((self.length, self.num_channel))   # The input tensor
         pool = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = learner50(pool, self.num_filters)             # The learner
         # Problem Types
@@ -252,7 +252,6 @@ class ResNet:
 
 
     def ResNet101(self):
-        # num_filters = 64 [Default]
         outputs = []
         inputs = Input((self.length, self.num_channel))   # The input tensor
         pool = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
@@ -272,9 +271,8 @@ class ResNet:
 
 
     def ResNet152(self):
-        # num_filters = 64 [Default]
         outputs = []
-        inputs = Input((self.length, self.num_channel))          # The input tensor
+        inputs = Input((self.length, self.num_channel))   # The input tensor
         pool = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = learner152(pool, self.num_filters)            # The learner
         # Problem Types
