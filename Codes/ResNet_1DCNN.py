@@ -1,7 +1,3 @@
-# ResNet 1D-Convolution Architecture in Keras - For both Classification and Regression Problems
-"""Reference: [Deep Residual Learning for Image Recognition] (https://arxiv.org/pdf/1512.03385.pdf)"""
-
-
 from keras.models import Model
 from keras.layers import Input, BatchNormalization, Activation, Add, Dense
 from keras.layers import Conv1D, MaxPooling1D, GlobalAveragePooling1D, GlobalMaxPooling1D
@@ -208,9 +204,9 @@ class ResNet:
     def ResNet18(self):
         # num_filters = 64 [Default]
         outputs = []
-        inputs = Input((self.length, self.num_channel))  # The input tensor
-        x = stem(inputs, self.num_filters)               # The Stem Convolution Group
-        x = learner18(x, self.num_filters)               # The learner
+        inputs = Input((self.length, self.num_channel))      # The input tensor
+        stem_ = stem(inputs, self.num_filters)               # The Stem Convolution Group
+        x = learner18(stem_, self.num_filters)               # The learner
         pooling = self.pooling
         # Problem Types
         if self.problem_type == 'Classification':
@@ -229,9 +225,9 @@ class ResNet:
     def ResNet34(self):
         # num_filters = 64 [Default]
         outputs = []
-        inputs = Input((self.length, self.num_channel))  # The input tensor
-        x = stem(inputs, self.num_filters)               # The Stem Convolution Group
-        x = learner34(x, self.num_filters)               # The learner
+        inputs = Input((self.length, self.num_channel))      # The input tensor
+        stem_ = stem(inputs, self.num_filters)               # The Stem Convolution Group
+        x = learner34(stem_, self.num_filters)               # The learner
         pooling = self.pooling
         # Problem Types
         if self.problem_type == 'Classification':
@@ -250,9 +246,9 @@ class ResNet:
     def ResNet50(self):
         # num_filters = 64 [Default]
         outputs = []
-        inputs = Input((self.length, self.num_channel))   # The input tensor
-        pool = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
-        x = learner50(pool, self.num_filters)             # The learner
+        inputs = Input((self.length, self.num_channel))     # The input tensor
+        stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
+        x = learner50(stem_b, self.num_filters)             # The learner
         pooling = self.pooling
         # Problem Types
         if self.problem_type == 'Classification':
@@ -271,9 +267,9 @@ class ResNet:
     def ResNet101(self):
         # num_filters = 64 [Default]
         outputs = []
-        inputs = Input((self.length, self.num_channel))   # The input tensor
-        pool = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
-        x = learner101(pool, self.num_filters)            # The learner
+        inputs = Input((self.length, self.num_channel))     # The input tensor
+        stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
+        x = learner101(stem_b, self.num_filters)            # The learner
         pooling = self.pooling
         # Problem Types
         if self.problem_type == 'Classification':
@@ -292,9 +288,9 @@ class ResNet:
     def ResNet152(self):
         # num_filters = 64 [Default]
         outputs = []
-        inputs = Input((self.length, self.num_channel))   # The input tensor
-        pool = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
-        x = learner152(pool, self.num_filters)            # The learner
+        inputs = Input((self.length, self.num_channel))     # The input tensor
+        stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
+        x = learner152(stem_b, self.num_filters)            # The learner
         pooling = self.pooling
         # Problem Types
         if self.problem_type == 'Classification':
