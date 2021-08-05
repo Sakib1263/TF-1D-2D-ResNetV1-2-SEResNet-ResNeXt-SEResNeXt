@@ -8,7 +8,10 @@ def stem(inputs, num_filters):
     # inputs : input vector
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
     conv = Conv1D(num_filters, 7, strides=2, padding='same', kernel_initializer="he_normal")(inputs)
-    pool = MaxPooling1D(pool_size=2, strides=2, padding='valid')(conv)
+    if (conv.shape[1] <= 2):
+        pool = MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
+    else:
+        pool = MaxPooling1D(pool_size=2, strides=2, padding="valid")(conv)
     return pool
 
 
@@ -80,7 +83,10 @@ def stem_bottleneck(inputs, num_filters):
     # inputs : input vector
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
     conv = Conv1D(num_filters, 7, strides=2, padding='same', kernel_initializer="he_normal")(inputs)
-    pool = MaxPooling1D(pool_size=2, strides=2, padding='valid')(conv)
+    if (conv.shape[1] <= 2):
+        pool = MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
+    else:
+        pool = MaxPooling1D(pool_size=2, strides=2, padding="valid")(conv)
     return pool
 
 
