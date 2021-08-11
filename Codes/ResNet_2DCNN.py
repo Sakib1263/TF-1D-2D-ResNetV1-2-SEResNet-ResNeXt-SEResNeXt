@@ -1,3 +1,7 @@
+# ResNet 1D-Convolution Architecture in Keras - For both Classification and Regression Problems
+"""Reference: [Deep Residual Learning for Image Recognition] (https://arxiv.org/abs/1512.03385)"""
+
+
 from keras.models import Model
 from keras.layers import Input, BatchNormalization, Activation, Add, Dense, Flatten, Dropout
 from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D
