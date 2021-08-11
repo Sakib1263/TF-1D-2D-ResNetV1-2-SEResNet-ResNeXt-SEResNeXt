@@ -1,6 +1,6 @@
 # 1DResNet_KERAS
 This repository contains an One-Dimentional (1D) and Two-Dimentional (2D) versions of original variants of ResNet developed in KERAS along with implementation guidance (DEMO) in Jupyter Notebook. Read more about ResNets in this original paper: https://arxiv.org/pdf/1512.03385.pdf.  
-The models also contain BatchNormalization (BN) blocks after Convolutional blocks and before activation, which is deviant from the original implementation. Read more about BN in this paper: https://arxiv.org/abs/1502.03167v3
+The models also contain BatchNormalization (BN) blocks after Convolutional blocks and before activation, which is deviant from the original implementation. Read more about BN in this paper: https://arxiv.org/abs/1502.03167v3.  
 The models in this repository have been built following the original paper's implementation as much as possible, though more efficient implementation could be possible due to the advancements in this field since then. The models implemented in this repository are:
 1. ResNet18
 2. ResNet32
