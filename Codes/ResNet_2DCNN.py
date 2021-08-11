@@ -7,9 +7,9 @@ from keras.layers import Input, BatchNormalization, Activation, Add, Dense, Flat
 from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D
 
 
-def Conv_2D_Block(inputs, model_width, kernel):
+def Conv_2D_Block(inputs, model_width, kernel, strides):
     # 2D Convolutional Block with BatchNormalization
-    conv = Conv2D(model_width, (kernel, kernel), strides=(2, 2), padding="same", kernel_initializer="he_normal")(inputs)
+    conv = Conv2D(model_width, (kernel, kernel), strides=(strides, strides), padding="same", kernel_initializer="he_normal")(inputs)
     batch_norm = BatchNormalization()(conv)
     activate = Activation('relu')(batch_norm)
 
@@ -20,7 +20,7 @@ def stem(inputs, num_filters):
     # Construct the Stem Convolution Group
     # inputs : input vector
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
-    conv = Conv_2D_Block(inputs, num_filters, 7)
+    conv = Conv_2D_Block(inputs, num_filters, 7, 2)
     if conv.shape[1] <= 2:
         pool = MaxPooling2D(pool_size=(1, 1), strides=(2, 2), padding="valid")(conv)
     else:
@@ -32,8 +32,8 @@ def conv_block(inputs, num_filters):
     # Construct Block of Convolutions without Pooling
     # x        : input into the block
     # n_filters: number of filters
-    conv = Conv_2D_Block(inputs, num_filters, 3)
-    conv = Conv_2D_Block(conv, num_filters, 3)
+    conv = Conv_2D_Block(inputs, num_filters, 3, 2)
+    conv = Conv_2D_Block(conv, num_filters, 3, 2)
     return conv
 
 
@@ -43,8 +43,8 @@ def residual_block(inputs, num_filters):
     # n_filters: number of filters
     shortcut = inputs
     #
-    conv = Conv_2D_Block(inputs, num_filters, 3)
-    conv = Conv_2D_Block(conv, num_filters, 3)
+    conv = Conv_2D_Block(inputs, num_filters, 3, 1)
+    conv = Conv_2D_Block(conv, num_filters, 3, 1)
     conv = Add()([conv, shortcut])
     out = Activation('relu')(conv)
     return out
@@ -87,7 +87,7 @@ def stem_bottleneck(inputs, num_filters):
     # Construct the Stem Convolution Group
     # inputs : input vector
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
-    conv = Conv_2D_Block(inputs, num_filters, 7)
+    conv = Conv_2D_Block(inputs, num_filters, 7, 2)
     if conv.shape[1] <= 2:
         pool = MaxPooling2D(pool_size=(1, 1), strides=(2, 2), padding="valid")(conv)
     else:
@@ -99,9 +99,9 @@ def conv_block_bottleneck(inputs, num_filters):
     # Construct Block of Convolutions without Pooling
     # x        : input into the block
     # n_filters: number of filters
-    conv = Conv_2D_Block(inputs, num_filters, 3)
-    conv = Conv_2D_Block(conv, num_filters, 3)
-    conv = Conv_2D_Block(conv, num_filters, 3)
+    conv = Conv_2D_Block(inputs, num_filters, 3, 2)
+    conv = Conv_2D_Block(conv, num_filters, 3, 2)
+    conv = Conv_2D_Block(conv, num_filters, 3, 2)
     return conv
 
 
@@ -109,11 +109,11 @@ def residual_block_bottleneck(inputs, num_filters):
     # Construct a Residual Block of Convolutions
     # x        : input into the block
     # n_filters: number of filters
-    shortcut = Conv_2D_Block(inputs, num_filters * 4, 1)
+    shortcut = Conv_2D_Block(inputs, num_filters * 4, 1, 1)
     #
-    conv = Conv_2D_Block(inputs, num_filters, 1)
-    conv = Conv_2D_Block(conv, num_filters, 3)
-    conv = Conv_2D_Block(conv, num_filters * 4, 1)
+    conv = Conv_2D_Block(inputs, num_filters, 1, 1)
+    conv = Conv_2D_Block(conv, num_filters, 3, 1)
+    conv = Conv_2D_Block(conv, num_filters * 4, 1, 1)
     conv = Add()([conv, shortcut])
     out = Activation('relu')(conv)
     return out
@@ -260,3 +260,4 @@ class ResNet:
         # Instantiate the Model
         model = Model(inputs, outputs)
         return model
+    
