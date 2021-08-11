@@ -1,16 +1,26 @@
 # ResNet 1D-Convolution Architecture in Keras - For both Classification and Regression Problems
 """Reference: [Deep Residual Learning for Image Recognition] (https://arxiv.org/abs/1512.03385)"""
 
+
 from keras.models import Model
 from keras.layers import Input, BatchNormalization, Activation, Add, Dense, Flatten, Dropout
 from keras.layers import Conv1D, MaxPooling1D, GlobalAveragePooling1D, GlobalMaxPooling1D
+
+
+def Conv_1D_Block(inputs, model_width, kernel):
+    # 1D Convolutional Block with BatchNormalization
+    conv = Conv1D(model_width, kernel, strides=2, padding="same", kernel_initializer="he_normal")(inputs)
+    batch_norm = BatchNormalization()(conv)
+    activate = Activation('relu')(batch_norm)
+
+    return activate
 
 
 def stem(inputs, num_filters):
     # Construct the Stem Convolution Group
     # inputs : input vector
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
-    conv = Conv1D(num_filters, 7, strides=2, padding='same', kernel_initializer="he_normal")(inputs)
+    conv = Conv_1D_Block(inputs, num_filters, 7)
     if conv.shape[1] <= 2:
         pool = MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
     else:
@@ -18,31 +28,23 @@ def stem(inputs, num_filters):
     return pool
 
 
-def conv_block(inputs, n_filters):
+def conv_block(inputs, num_filters):
     # Construct Block of Convolutions without Pooling
     # x        : input into the block
     # n_filters: number of filters
-    conv = Conv1D(n_filters, 3, strides=2, padding="same", kernel_initializer="he_normal")(inputs)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
-    conv = Conv1D(n_filters, 3, strides=2, padding="same", kernel_initializer="he_normal")(conv)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
+    conv = Conv_1D_Block(inputs, num_filters, 3)
+    conv = Conv_1D_Block(conv, num_filters, 3)
     return conv
 
 
-def residual_block(inputs, n_filters):
+def residual_block(inputs, num_filters):
     # Construct a Residual Block of Convolutions
     # x        : input into the block
     # n_filters: number of filters
     shortcut = inputs
     #
-    conv = Conv1D(n_filters, 3, strides=1, padding="same", kernel_initializer="he_normal")(inputs)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
-    conv = Conv1D(n_filters, 3, strides=1, padding="same", kernel_initializer="he_normal")(conv)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
+    conv = Conv_1D_Block(inputs, num_filters, 3)
+    conv = Conv_1D_Block(conv, num_filters, 3)
     conv = Add()([conv, shortcut])
     out = Activation('relu')(conv)
     return out
@@ -57,7 +59,7 @@ def residual_group(inputs, n_filters, n_blocks, conv=True):
     for _ in range(n_blocks):
         out = residual_block(inputs, n_filters)
 
-    # Double the size of filters and reduce feature maps by 75% (strides=2) to fit the next Residual Group
+    # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
         out = conv_block(out, n_filters * 2)
     return out
@@ -93,38 +95,25 @@ def stem_bottleneck(inputs, num_filters):
     return pool
 
 
-def conv_block_bottleneck(inputs, n_filters):
+def conv_block_bottleneck(inputs, num_filters):
     # Construct Block of Convolutions without Pooling
     # x        : input into the block
     # n_filters: number of filters
-    conv = Conv1D(n_filters, 3, strides=2, padding="same", kernel_initializer="he_normal")(inputs)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
-    conv = Conv1D(n_filters, 3, strides=2, padding="same", kernel_initializer="he_normal")(conv)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
-    conv = Conv1D(n_filters, 3, strides=2, padding="same", kernel_initializer="he_normal")(conv)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
+    conv = Conv_1D_Block(inputs, num_filters, 3)
+    conv = Conv_1D_Block(conv, num_filters, 3)
+    conv = Conv_1D_Block(conv, num_filters, 3)
     return conv
 
 
-def residual_block_bottleneck(inputs, n_filters):
+def residual_block_bottleneck(inputs, num_filters):
     # Construct a Residual Block of Convolutions
     # x        : input into the block
     # n_filters: number of filters
-    shortcut = Conv1D(n_filters * 4, 1, strides=1, padding="same", kernel_initializer="he_normal")(inputs)
-    shortcut = BatchNormalization()(shortcut)
+    shortcut = Conv_1D_Block(inputs, num_filters * 4, 1)
     #
-    conv = Conv1D(n_filters, 1, strides=1, padding="same", kernel_initializer="he_normal")(inputs)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
-    conv = Conv1D(n_filters, 3, strides=1, padding="same", kernel_initializer="he_normal")(conv)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
-    conv = Conv1D(n_filters * 4, 1, strides=1, padding="same", kernel_initializer="he_normal")(conv)
-    conv = BatchNormalization()(conv)
-    conv = Activation('relu')(conv)
+    conv = Conv_1D_Block(inputs, num_filters, 1)
+    conv = Conv_1D_Block(conv, num_filters, 3)
+    conv = Conv_1D_Block(conv, num_filters * 4, 1)
     conv = Add()([conv, shortcut])
     out = Activation('relu')(conv)
     return out
