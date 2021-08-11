@@ -7,9 +7,9 @@ from keras.layers import Input, BatchNormalization, Activation, Add, Dense, Flat
 from keras.layers import Conv1D, MaxPooling1D, GlobalAveragePooling1D, GlobalMaxPooling1D
 
 
-def Conv_1D_Block(inputs, model_width, kernel):
+def Conv_1D_Block(inputs, model_width, kernel, strides):
     # 1D Convolutional Block with BatchNormalization
-    conv = Conv1D(model_width, kernel, strides=2, padding="same", kernel_initializer="he_normal")(inputs)
+    conv = Conv1D(model_width, kernel, strides=strides, padding="same", kernel_initializer="he_normal")(inputs)
     batch_norm = BatchNormalization()(conv)
     activate = Activation('relu')(batch_norm)
 
@@ -20,7 +20,7 @@ def stem(inputs, num_filters):
     # Construct the Stem Convolution Group
     # inputs : input vector
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
-    conv = Conv_1D_Block(inputs, num_filters, 7)
+    conv = Conv_1D_Block(inputs, num_filters, 7, 2)
     if conv.shape[1] <= 2:
         pool = MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
     else:
@@ -32,8 +32,8 @@ def conv_block(inputs, num_filters):
     # Construct Block of Convolutions without Pooling
     # x        : input into the block
     # n_filters: number of filters
-    conv = Conv_1D_Block(inputs, num_filters, 3)
-    conv = Conv_1D_Block(conv, num_filters, 3)
+    conv = Conv_1D_Block(inputs, num_filters, 3, 2)
+    conv = Conv_1D_Block(conv, num_filters, 3, 2)
     return conv
 
 
@@ -43,25 +43,25 @@ def residual_block(inputs, num_filters):
     # n_filters: number of filters
     shortcut = inputs
     #
-    conv = Conv_1D_Block(inputs, num_filters, 3)
-    conv = Conv_1D_Block(conv, num_filters, 3)
+    conv = Conv_1D_Block(inputs, num_filters, 3, 1)
+    conv = Conv_1D_Block(conv, num_filters, 3, 1)
     conv = Add()([conv, shortcut])
     out = Activation('relu')(conv)
     return out
 
 
-def residual_group(inputs, n_filters, n_blocks, conv=True):
+def residual_group(inputs, num_filters, n_blocks, conv=True):
     # x        : input to the group
     # n_filters: number of filters
     # n_blocks : number of blocks in the group
     # conv     : flag to include the convolution block connector
     out = []
     for _ in range(n_blocks):
-        out = residual_block(inputs, n_filters)
+        out = residual_block(inputs, num_filters)
 
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
-        out = conv_block(out, n_filters * 2)
+        out = conv_block(out, num_filters * 2)
     return out
 
 
@@ -87,7 +87,7 @@ def stem_bottleneck(inputs, num_filters):
     # Construct the Stem Convolution Group
     # inputs : input vector
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
-    conv = Conv1D(num_filters, 7, strides=2, padding='same', kernel_initializer="he_normal")(inputs)
+    conv = Conv_1D_Block(inputs, num_filters, 7, 2)
     if conv.shape[1] <= 2:
         pool = MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
     else:
@@ -99,9 +99,9 @@ def conv_block_bottleneck(inputs, num_filters):
     # Construct Block of Convolutions without Pooling
     # x        : input into the block
     # n_filters: number of filters
-    conv = Conv_1D_Block(inputs, num_filters, 3)
-    conv = Conv_1D_Block(conv, num_filters, 3)
-    conv = Conv_1D_Block(conv, num_filters, 3)
+    conv = Conv_1D_Block(inputs, num_filters, 3, 2)
+    conv = Conv_1D_Block(conv, num_filters, 3, 2)
+    conv = Conv_1D_Block(conv, num_filters, 3, 2)
     return conv
 
 
@@ -109,28 +109,28 @@ def residual_block_bottleneck(inputs, num_filters):
     # Construct a Residual Block of Convolutions
     # x        : input into the block
     # n_filters: number of filters
-    shortcut = Conv_1D_Block(inputs, num_filters * 4, 1)
+    shortcut = Conv_1D_Block(inputs, num_filters * 4, 1, 1)
     #
-    conv = Conv_1D_Block(inputs, num_filters, 1)
-    conv = Conv_1D_Block(conv, num_filters, 3)
-    conv = Conv_1D_Block(conv, num_filters * 4, 1)
+    conv = Conv_1D_Block(inputs, num_filters, 1, 1)
+    conv = Conv_1D_Block(conv, num_filters, 3, 1)
+    conv = Conv_1D_Block(conv, num_filters * 4, 1, 1)
     conv = Add()([conv, shortcut])
     out = Activation('relu')(conv)
     return out
 
 
-def residual_group_bottleneck(inputs, n_filters, n_blocks, conv=True):
+def residual_group_bottleneck(inputs, num_filters, n_blocks, conv=True):
     # x        : input to the group
     # n_filters: number of filters
     # n_blocks : number of blocks in the group
     # conv     : flag to include the convolution block connector
     out = []
     for _ in range(n_blocks):
-        out = residual_block_bottleneck(inputs, n_filters)
+        out = residual_block_bottleneck(inputs, num_filters)
 
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
-        out = conv_block_bottleneck(out, n_filters * 2)
+        out = conv_block_bottleneck(out, num_filters * 2)
     return out
 
 
