@@ -179,14 +179,13 @@ def regressor(inputs, feature_number):
 
 class ResNet:
     def __init__(self, length, num_channel, num_filters, problem_type='Regression',
-                 output_nums=1, pooling='avg', dropout=False, dropout_rate=0.2):
+                 output_nums=1, pooling='avg', dropout_rate=False):
         self.length = length
         self.num_channel = num_channel
         self.num_filters = num_filters
         self.problem_type = problem_type
         self.output_nums = output_nums
         self.pooling = pooling
-        self.dropout = dropout
         self.dropout_rate = dropout_rate
 
     def MLP(self, x):
@@ -197,7 +196,7 @@ class ResNet:
             x = GlobalMaxPooling1D()(x)
         # Final Dense Outputting Layer for the outputs
         x = Flatten(name='flatten')(x)
-        if self.dropout:
+        if self.dropout_rate:
             x = Dropout(self.dropout_rate, name='Dropout')(x)
         # Problem Types
         if self.problem_type == 'Classification':
