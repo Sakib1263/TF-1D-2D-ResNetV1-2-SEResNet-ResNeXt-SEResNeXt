@@ -10,4 +10,9 @@ A table from the original paper containing the architectures of the ResNet model
 ![ResNet Architecture Params](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/ResNet.png "ResNet Parameters")  
 The original implementation comes up with a fixed number of 1000 classification due to using ImageNet dataset for training and evaluation purposes. The developed ResNet model is flexible enough to accept any number of classed according to the user's requirements.
 
-The speciality about this model is its flexibility. Apart from choosing any of 5 available ResNet models in 1D or 2D, one can easily change the parameters such as number of input kernels/filters (termed as width of the model), number of target classes for Classification and number of extracted features for Regression tasks, etc. Details of the process are available in the DEMO in the codes section. The datasets used in the DEMO as also available in the 'Documents' folder.
+The speciality about this model is its flexibility. Apart from choosing the ResNet models for 1D or 2D tasks, the user has the option for: 
+1. Choosing any of 4 available VGG models for either 1D or 2D tasks.
+2. Number of input kernel/filter, commonly known as Width of the model.
+3. Number of classes for Classification tasks and number of extracted features for Regression tasks.
+4. Number of Channels in the Input Dataset.
+Details of the process are available in the DEMO provided in the codes section. The datasets used in the DEMO as also available in the 'Documents' folder.
