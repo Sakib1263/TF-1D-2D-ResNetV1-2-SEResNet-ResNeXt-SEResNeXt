@@ -19,7 +19,7 @@ The original implementation comes up with a fixed number of 1000 classification 
 Mentionable that ResNet18 and ResNet34 uses a lighter residual block that other three deeper models as shown in the Figure below where the deeper residual block with a bottleneck structure is for ResNet50, ResNet101 and ResNet152.
 ![Residual Blocks](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/Images/Residual_Block.png "Residual Blocks")  
 
-
+# Supported Features
 The speciality about this model is its flexibility. The user has the option for: 
 1. Choosing any of 4 available ResNet models for either 1D or 2D tasks.
 2. Number of input kernel/filter, commonly known as Width of the model.
