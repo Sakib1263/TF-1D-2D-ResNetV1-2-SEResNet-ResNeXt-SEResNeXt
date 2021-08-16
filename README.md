@@ -8,7 +8,11 @@ On the contrary, the models contain BatchNormalization (BN) blocks after Convolu
 # ResNet Architectures
 A table from the original paper containing the architectures of the ResNet models developed is shown below:  
 ![ResNet Architecture Params](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/Images/ResNet.png "ResNet Parameters")  
-The original implementation comes up with a fixed number of 1000 classification due to using ImageNet dataset for training and evaluation purposes. The developed ResNet model is flexible enough to accept any number of classed according to the user's requirements.
+The original implementation comes up with a fixed number of 1000 classification due to using ImageNet dataset for training and evaluation purposes. The developed ResNet model is flexible enough to accept any number of classed according to the user's requirements.  
+
+Mentionable that ResNet18 and ResNet34 uses a lighter residual block that other three deeper models as shown in the Figure below where the deeper residual block with a bottleneck structure is for ResNet50, ResNet101 and ResNet152.
+![Residual Blocks](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/Images/Residual.png "Residual Blocks")  
+
 
 The speciality about this model is its flexibility. The user has the option for: 
 1. Choosing any of 4 available ResNet models for either 1D or 2D tasks.
