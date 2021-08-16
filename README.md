@@ -1,5 +1,7 @@
 # ResNet_Model_Builder_KERAS
-Models supported: ResNet18, ResNet32, ResNet50, ResNet101, ResNet 152 (1D and 2D version with DEMO). 
+Models supported: ResNet18, ResNet32, ResNet50, ResNet101, ResNet 152 (1D and 2D version with DEMO).  
+![ResNet Architecture Params](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/ResNet.png "ResNet Parameters")  
+
 
 This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of original variants of ResNet developed in KERAS along with implementation guidance (DEMO) in Jupyter Notebook. The models in this repository have been built following the original paper's implementation as much as possible, though more efficient implementation could be possible due to the advancements in this field since then. Read more about ResNets in this original paper: https://arxiv.org/pdf/1512.03385.pdf. 
 
