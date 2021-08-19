@@ -21,8 +21,8 @@ Mentionable that ResNet18 and ResNet34 uses a lighter residual block that other 
 
 ## Supported Features
 The speciality about this model is its flexibility. The user has the option for: 
-1. Choosing any of 4 available ResNet models for either 1D or 2D tasks.
-2. Number of input kernel/filter, commonly known as Width of the model.
-3. Number of classes for Classification tasks and number of extracted features for Regression tasks.
-4. Number of Channels in the Input Dataset.
+1. Choosing any of 5 available ResNet models for either 1D or 2D tasks.
+2. Varying number of input kernel/filter, commonly known as the Width of the model.
+3. Varying number of classes for Classification tasks and number of extracted features for Regression tasks.
+4. Varying number of Channels in the Input Dataset.
 Details of the process are available in the DEMO provided in the codes section. The datasets used in the DEMO as also available in the 'Documents' folder.
