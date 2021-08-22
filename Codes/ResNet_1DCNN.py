@@ -2,18 +2,16 @@
 """Reference: [Deep Residual Learning for Image Recognition] (https://arxiv.org/abs/1512.03385)"""
 
 
-from keras.models import Model
-from keras.layers import Input, BatchNormalization, Activation, Add, Dense, Flatten, Dropout
-from keras.layers import Conv1D, MaxPooling1D, GlobalAveragePooling1D, GlobalMaxPooling1D
+import tensorflow as tf
 
 
-def Conv_1D_Block(inputs, model_width, kernel, strides):
+def Conv_1D_Block(x, model_width, kernel, strides):
     # 1D Convolutional Block with BatchNormalization
-    conv = Conv1D(model_width, kernel, strides=strides, padding="same", kernel_initializer="he_normal")(inputs)
-    batch_norm = BatchNormalization()(conv)
-    activate = Activation('relu')(batch_norm)
+    x = tf.keras.layers.Conv1D(model_width, kernel, strides=strides, padding="same", kernel_initializer="he_normal")(x)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.Activation('relu')(x)
 
-    return activate
+    return x
 
 
 def stem(inputs, num_filters):
@@ -22,9 +20,9 @@ def stem(inputs, num_filters):
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
     conv = Conv_1D_Block(inputs, num_filters, 7, 2)
     if conv.shape[1] <= 2:
-        pool = MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
+        pool = tf.keras.layers.MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
     else:
-        pool = MaxPooling1D(pool_size=2, strides=2, padding="valid")(conv)
+        pool = tf.keras.layers.MaxPooling1D(pool_size=2, strides=2, padding="valid")(conv)
     return pool
 
 
@@ -45,8 +43,8 @@ def residual_block(inputs, num_filters):
     #
     conv = Conv_1D_Block(inputs, num_filters, 3, 1)
     conv = Conv_1D_Block(conv, num_filters, 3, 1)
-    conv = Add()([conv, shortcut])
-    out = Activation('relu')(conv)
+    conv = tf.keras.layers.Add()([conv, shortcut])
+    out = tf.keras.layers.Activation('relu')(conv)
     return out
 
 
@@ -89,9 +87,9 @@ def stem_bottleneck(inputs, num_filters):
     # First Convolutional layer, where pooled feature maps will be reduced by 75%
     conv = Conv_1D_Block(inputs, num_filters, 7, 2)
     if conv.shape[1] <= 2:
-        pool = MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
+        pool = tf.keras.layers.MaxPooling1D(pool_size=1, strides=2, padding="valid")(conv)
     else:
-        pool = MaxPooling1D(pool_size=2, strides=2, padding="valid")(conv)
+        pool = tf.keras.layers.MaxPooling1D(pool_size=2, strides=2, padding="valid")(conv)
     return pool
 
 
@@ -114,8 +112,9 @@ def residual_block_bottleneck(inputs, num_filters):
     conv = Conv_1D_Block(inputs, num_filters, 1, 1)
     conv = Conv_1D_Block(conv, num_filters, 3, 1)
     conv = Conv_1D_Block(conv, num_filters * 4, 1, 1)
-    conv = Add()([conv, shortcut])
-    out = Activation('relu')(conv)
+    conv = tf.keras.layers.Add()([conv, shortcut])
+    out = tf.keras.layers.Activation('relu')(conv)
+
     return out
 
 
@@ -131,6 +130,7 @@ def residual_group_bottleneck(inputs, num_filters, n_blocks, conv=True):
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
         out = conv_block_bottleneck(out, num_filters * 2)
+
     return out
 
 
@@ -165,7 +165,7 @@ def classifier(inputs, class_number):
     # Construct the Classifier Group
     # inputs       : input vector
     # class_number : number of output classes
-    out = Dense(class_number, activation='softmax')(inputs)
+    out = tf.keras.layers.Dense(class_number, activation='softmax')(inputs)
     return out
 
 
@@ -173,7 +173,7 @@ def regressor(inputs, feature_number):
     # Construct the Regressor Group
     # inputs       : input vector
     # feature_number : number of output features
-    out = Dense(feature_number, activation='linear')(inputs)
+    out = tf.keras.layers.Dense(feature_number, activation='linear')(inputs)
     return out
 
 
@@ -189,72 +189,60 @@ class ResNet:
         self.dropout_rate = dropout_rate
 
     def MLP(self, x):
-        outputs = []
         if self.pooling == 'avg':
-            x = GlobalAveragePooling1D()(x)
+            x = tf.keras.layers.GlobalAveragePooling1D()(x)
         elif self.pooling == 'max':
-            x = GlobalMaxPooling1D()(x)
+            x = tf.keras.layers.GlobalMaxPooling1D()(x)
         # Final Dense Outputting Layer for the outputs
-        x = Flatten(name='flatten')(x)
+        x = tf.keras.layers.Flatten(name='flatten')(x)
         if self.dropout_rate:
-            x = Dropout(self.dropout_rate, name='Dropout')(x)
-        # Problem Types
+            x = tf.keras.layers.Dropout(self.dropout_rate, name='Dropout')(x)
+        outputs = tf.keras.layers.Dense(self.output_nums, activation='linear')(x)
         if self.problem_type == 'Classification':
-            # The Classifier for n classes
-            class_number = self.output_nums
-            outputs = classifier(x, class_number)
-        elif self.problem_type == 'Regression':
-            # The Regressor [Default]
-            feature_number = self.output_nums
-            outputs = regressor(x, feature_number)
+            outputs = tf.keras.layers.Dense(self.output_nums, activation='softmax')(x)
         return outputs
 
     def ResNet18(self):
-        outputs = []
-        inputs = Input((self.length, self.num_channel))      # The input tensor
+        inputs = tf.keras.Input((self.length, self.num_channel))      # The input tensor
         stem_ = stem(inputs, self.num_filters)               # The Stem Convolution Group
         x = learner18(stem_, self.num_filters)               # The learner
         outputs = self.MLP(x)
         # Instantiate the Model
-        model = Model(inputs, outputs)
+        model = tf.keras.Model(inputs, outputs)
         return model
 
     def ResNet34(self):
-        outputs = []
-        inputs = Input((self.length, self.num_channel))      # The input tensor
+        inputs = tf.keras.Input((self.length, self.num_channel))      # The input tensor
         stem_ = stem(inputs, self.num_filters)               # The Stem Convolution Group
         x = learner34(stem_, self.num_filters)               # The learner
         outputs = self.MLP(x)
         # Instantiate the Model
-        model = Model(inputs, outputs)
+        model = tf.keras.Model(inputs, outputs)
         return model
 
     def ResNet50(self):
-        outputs = []
-        inputs = Input((self.length, self.num_channel))     # The input tensor
+        inputs = tf.keras.Input((self.length, self.num_channel))     # The input tensor
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = learner50(stem_b, self.num_filters)             # The learner
         outputs = self.MLP(x)
         # Instantiate the Model
-        model = Model(inputs, outputs)
+        model = tf.keras.Model(inputs, outputs)
         return model
 
     def ResNet101(self):
-        outputs = []
-        inputs = Input((self.length, self.num_channel))     # The input tensor
+        inputs = tf.keras.Input((self.length, self.num_channel))     # The input tensor
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = learner101(stem_b, self.num_filters)            # The learner
         outputs = self.MLP(x)
         # Instantiate the Model
-        model = Model(inputs, outputs)
+        model = tf.keras.Model(inputs, outputs)
         return model
 
     def ResNet152(self):
-        outputs = []
-        inputs = Input((self.length, self.num_channel))     # The input tensor
+        inputs = tf.keras.Input((self.length, self.num_channel))     # The input tensor
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = learner152(stem_b, self.num_filters)            # The learner
         outputs = self.MLP(x)
         # Instantiate the Model
-        model = Model(inputs, outputs)
+        model = tf.keras.Model(inputs, outputs)
         return model
