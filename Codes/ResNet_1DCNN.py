@@ -246,3 +246,5 @@ class ResNet:
         # Instantiate the Model
         model = tf.keras.Model(inputs, outputs)
         return model
+
+    
