@@ -27,7 +27,7 @@ The architecture of ResNeXt, also known as ResNet_v3, is almost same as that of 
 ![Aggregated Residual Block Models](https://github.com/Sakib1263/ResNet-ResNeXt-1D-2D-Tensorflow-Keras/blob/main/Documents/Images/ResNeXt_Eq_Blocks.png "Aggregated Residual Blocks")  
 
 The following Table represents a comparison between ResNet50 and ResNeXt50. It can be seen that with Cardinality = 32 (Default in the paper), the ResNeXt model has around 500000 less parameters than its equivalent ResNet counterpart.  
-![Aggregated Residual Block Table](https://github.com/Sakib1263/https://github.com/Sakib1263/ResNet-ResNeXt-1D-2D-Tensorflow-Keras/blob/main/Documents/Images/ResNeXt_Table.png "ResNet50 vs. ResNeXt50")  
+![Aggregated Residual Block Table](hhttps://github.com/Sakib1263/ResNet-ResNeXt-1D-2D-Tensorflow-Keras/blob/main/Documents/Images/ResNeXt_Table.png "ResNet50 vs. ResNeXt50")  
 
 ## Supported Features
 The speciality about this model is its flexibility. The user has the option for: 
