@@ -1,7 +1,8 @@
 # ResNet-ResNeXt-Model-Builder-Tensorflow-Keras
 This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of ResNet (original) and ResNeXt (Aggregated Residual Transformations on ResNet) developed in Tensorflow-Keras. The models in this repository have been built following the original papers' implementation guidances (as much as possible) except adding commonly accepted beneficial blocks such as BatchNormalization.  
-Read more about ResNets in this original preprint: https://arxiv.org/pdf/1512.03385.pdf.  
+Read more about ResNets in this original preprint: https://arxiv.org/pdf/1512.03385.  
 Read more about ResNeXts in this original preprint: https://arxiv.org/abs/1611.05431.  
+
 Supprted Models:  
 1. ResNet18 - ResNeXt18
 2. ResNet34 - ResNeXt34
