@@ -1,6 +1,8 @@
 # ResNet-ResNeXt-Model-Builder-Tensorflow-Keras
-This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of original variants of ResNet developed in KERAS along with implementation guidance (DEMO) in Jupyter Notebook. The models in this repository have been built following the original paper's implementation as much as possible, though more efficient implementation could be possible due to the advancements in this field since then. Read more about ResNets in this original paper: https://arxiv.org/pdf/1512.03385.pdf. 
-Supprted Models:
+This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of ResNet (original) and ResNeXt (Aggregated Residual Transformations on ResNet) developed in Tensorflow-Keras. The models in this repository have been built following the original papers' implementation guidances (as much as possible) except adding commonly accepted beneficial blocks such as BatchNormalization.  
+Read more about ResNets in this original preprint: https://arxiv.org/pdf/1512.03385.pdf.  
+Read more about ResNeXts in this original preprint: https://arxiv.org/abs/1611.05431.  
+Supprted Models:  
 1. ResNet18 - ResNeXt18
 2. ResNet34 - ResNeXt34
 3. ResNet50 - ResNeXt50
@@ -18,6 +20,9 @@ The original implementation comes up with a fixed number of 1000 classification 
 
 Mentionable that ResNet18 and ResNet34 uses a lighter residual block that other three deeper models as shown in the Figure below where the deeper residual block with a bottleneck structure is for ResNet50, ResNet101 and ResNet152.
 ![Residual Blocks](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/Images/Residual_Block.png "Residual Blocks")  
+
+## ResNeXt Architectures
+
 
 ## Supported Features
 The speciality about this model is its flexibility. The user has the option for: 
