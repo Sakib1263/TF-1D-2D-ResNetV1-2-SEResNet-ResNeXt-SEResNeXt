@@ -1,5 +1,5 @@
 # ResNet-ResNeXt-Model-Builder-Tensorflow-Keras
-This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of ResNet (original) and ResNeXt (Aggregated Residual Transformations on ResNet) developed in Tensorflow-Keras. The models in this repository have been built following the original papers' implementation guidances (as much as possible) except adding commonly accepted beneficial blocks such as BatchNormalization.  
+This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of ResNet (original) and ResNeXt (Aggregated Residual Transformations on ResNet) developed in Tensorflow-Keras. The models in this repository have been built following the original papers' implementation guidances (as much as possible).
 Read more about ResNets in this original preprint: https://arxiv.org/pdf/1512.03385.  
 Read more about ResNeXts in this original preprint: https://arxiv.org/abs/1611.05431.  
 
@@ -12,7 +12,7 @@ Supprted Models:
 
 ![ResNet Architecture Params](https://github.com/Sakib1263/ResNet-Model-Builder-KERAS/blob/main/Documents/Images/ResNet_Model.png "ResNet Architecture") 
 
-On the contrary, the models contain BatchNormalization (BN) blocks after Convolutional blocks and before activation, which is deviant from the original implementation. Read more about BN in this paper: https://arxiv.org/abs/1502.03167v3.
+All the models contain BatchNormalization (BN) blocks after Convolutional blocks and before activation (ReLU), which is deviant from the original implementation to obtain better performance. Read more about BN in this paper: https://arxiv.org/abs/1502.03167v3.
 
 ## ResNet Architectures
 A table from the original paper containing the architectures of the ResNet models developed is shown below:  
@@ -23,7 +23,8 @@ Mentionable that ResNet18 and ResNet34 uses a lighter residual block that other 
 ![Residual Blocks](https://github.com/Sakib1263/1DResNet-KERAS/blob/main/Documents/Images/Residual_Block.png "Residual Blocks")  
 
 ## ResNeXt Architectures
-
+The architecture of ResNeXt, also known as ResNet_v3, is almost same as that of the original ResNet, except the Residual Block as shown in the figure below. The aggregated residual block in ResNeXt divides the input tensor into multiple parallel paths based on the cardinality factor set by the user. Normally the more paths we have, the better is the performance and the lighter is the network. This image from the paper shows three equivalent structure for Aggregated Residual Blocks. In this code, only model (b) has been implemented (so far).
+![Aggregated Residual Block Models](https://github.com/Sakib1263/ResNet-ResNeXt-1D-2D-Tensorflow-Keras/blob/main/Documents/Images/ResNeXt_Eq_Blocks.png "Aggregated Residual Blocks")  
 
 ## Supported Features
 The speciality about this model is its flexibility. The user has the option for: 
