@@ -3,7 +3,7 @@ This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions 
 Read more about ResNets in this original preprint: https://arxiv.org/pdf/1512.03385.  
 Read more about ResNeXts in this original preprint: https://arxiv.org/abs/1611.05431.  
 
-Supprted Models:  
+Supported Models:  
 1. ResNet18 - ResNeXt18
 2. ResNet34 - ResNeXt34
 3. ResNet50 - ResNeXt50
