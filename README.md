@@ -1,13 +1,12 @@
 # ResNet-ResNeXt-Model-Builder-Tensorflow-Keras
 This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of ResNet (original) and ResNeXt (Aggregated Residual Transformations on ResNet) developed in Tensorflow-Keras. The models in this repository have been built following the original papers' implementation guidances (as much as possible).  
-Read more about ResNeXts in this original preprint: https://arxiv.org/abs/1611.05431.  
 
 Supported Models:  
-1. ResNet18 [1] - ResNeXt18 [2]
-2. ResNet34 [1] - ResNeXt34 [2]
-3. ResNet50 [1] - ResNeXt50 [2]
-4. ResNet101 [1] - ResNeXt101 [2]
-5. ResNet152 [1] - ResNeXt152 [2]
+1. ResNet18 [1] - ResNeXt18 [2]  
+2. ResNet34 [1] - ResNeXt34 [2]  
+3. ResNet50 [1] - ResNeXt50 [2]  
+4. ResNet101 [1] - ResNeXt101 [2]  
+5. ResNet152 [1] - ResNeXt152 [2]  
 
 ![ResNet Architecture Params](https://github.com/Sakib1263/ResNet-Model-Builder-KERAS/blob/main/Documents/Images/ResNet_Model.png "ResNet Architecture") 
 
@@ -44,6 +43,6 @@ The speciality about this model is its flexibility. The user has the option for:
 Details of the process are available in the DEMO provided in the codes section. The datasets used in the DEMO as also available in the 'Documents' folder.
 
 ## References  
-**[1]** He, K., Zhang, X., Ren, S., & Sun, J. (2021). Deep Residual Learning for Image Recognition. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1512.03385.
-**[2]** Xie, S., Girshick, R., Dollár, P., Tu, Z., & He, K. (2021). Aggregated Residual Transformations for Deep Neural Networks. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1611.05431.
-**[3]** Ioffe, S., & Szegedy, C. (2021). Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1502.03167v3.
+**[1]** He, K., Zhang, X., Ren, S., & Sun, J. (2021). Deep Residual Learning for Image Recognition. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1512.03385.  
+**[2]** Xie, S., Girshick, R., Dollár, P., Tu, Z., & He, K. (2021). Aggregated Residual Transformations for Deep Neural Networks. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1611.05431.  
+**[3]** Ioffe, S., & Szegedy, C. (2021). Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1502.03167v3.  
