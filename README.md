@@ -1,18 +1,17 @@
 # ResNet-ResNeXt-Model-Builder-Tensorflow-Keras
 This repository contains One-Dimentional (1D) and Two-Dimentional (2D) versions of ResNet (original) and ResNeXt (Aggregated Residual Transformations on ResNet) developed in Tensorflow-Keras. The models in this repository have been built following the original papers' implementation guidances (as much as possible).  
-Read more about ResNets in this original preprint: https://arxiv.org/pdf/1512.03385.  
 Read more about ResNeXts in this original preprint: https://arxiv.org/abs/1611.05431.  
 
 Supported Models:  
-1. ResNet18 - ResNeXt18
-2. ResNet34 - ResNeXt34
-3. ResNet50 - ResNeXt50
-4. ResNet101 - ResNeXt101
-5. ResNet152 - ResNeXt152
+1. ResNet18 [1] - ResNeXt18 [2]
+2. ResNet34 [1] - ResNeXt34 [2]
+3. ResNet50 [1] - ResNeXt50 [2]
+4. ResNet101 [1] - ResNeXt101 [2]
+5. ResNet152 [1] - ResNeXt152 [2]
 
 ![ResNet Architecture Params](https://github.com/Sakib1263/ResNet-Model-Builder-KERAS/blob/main/Documents/Images/ResNet_Model.png "ResNet Architecture") 
 
-All the models contain BatchNormalization (BN) blocks after Convolutional blocks and before activation (ReLU), which is deviant from the original implementation to obtain better performance. Read more about BN in this paper: https://arxiv.org/abs/1502.03167v3.
+All the models contain BatchNormalization (BN) blocks after Convolutional blocks and before activation (ReLU), which is deviant from the original implementation to obtain better performance. Read more about BN in this paper [3].
 
 ## ResNet Architectures
 A table from the original paper containing the architectures of the ResNet models developed is shown below:  
@@ -43,3 +42,8 @@ The speciality about this model is its flexibility. The user has the option for:
 5. Varying Cardinality amount in the ResNext architecture (model default is 8, paper default is 32). Mentionable that, When Cardinality = 1, ResNeXt becomes ResNet.  
 
 Details of the process are available in the DEMO provided in the codes section. The datasets used in the DEMO as also available in the 'Documents' folder.
+
+## References  
+**[1]** He, K., Zhang, X., Ren, S., & Sun, J. (2021). Deep Residual Learning for Image Recognition. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1512.03385.
+**[2]** Xie, S., Girshick, R., Dollár, P., Tu, Z., & He, K. (2021). Aggregated Residual Transformations for Deep Neural Networks. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1611.05431.
+**[3]** Ioffe, S., & Szegedy, C. (2021). Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift. arXiv.org. Retrieved 30 August 2021, from https://arxiv.org/abs/1502.03167v3.
