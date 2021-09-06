@@ -49,31 +49,13 @@ def residual_group(inputs, num_filters, n_blocks, conv=True):
     # n_filters: number of filters
     # n_blocks : number of blocks in the group
     # conv     : flag to include the convolution block connector
-    out = []
-    for _ in range(n_blocks):
-        out = residual_block(inputs, num_filters)
+    out = inputs
+    for i in range(n_blocks):
+        out = residual_block(out, num_filters)
 
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
         out = conv_block(out, num_filters * 2)
-    return out
-
-
-def learner18(inputs, num_filters):
-    # Construct the Learner
-    x = residual_group(inputs, num_filters, 2)          # First Residual Block Group of 64 filters
-    x = residual_group(x, num_filters * 2, 1)           # Second Residual Block Group of 128 filters
-    x = residual_group(x, num_filters * 4, 1)           # Third Residual Block Group of 256 filters
-    out = residual_group(x, num_filters * 8, 1, False)  # Fourth Residual Block Group of 512 filters
-    return out
-
-
-def learner34(inputs, num_filters):
-    # Construct the Learner
-    x = residual_group(inputs, num_filters, 3)          # First Residual Block Group of 64 filters
-    x = residual_group(x, num_filters * 2, 3)           # Second Residual Block Group of 128 filters
-    x = residual_group(x, num_filters * 4, 5)           # Third Residual Block Group of 256 filters
-    out = residual_group(x, num_filters * 8, 2, False)  # Fourth Residual Block Group of 512 filters
     return out
 
 
@@ -119,14 +101,32 @@ def residual_group_bottleneck(inputs, num_filters, n_blocks, conv=True):
     # n_filters: number of filters
     # n_blocks : number of blocks in the group
     # conv     : flag to include the convolution block connector
-    out = []
-    for _ in range(n_blocks):
-        out = residual_block_bottleneck(inputs, num_filters)
+    out = inputs
+    for i in range(n_blocks):
+        out = residual_block_bottleneck(out, num_filters)
 
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
         out = conv_block_bottleneck(out, num_filters * 2)
 
+    return out
+
+
+def learner18(inputs, num_filters):
+    # Construct the Learner
+    x = residual_group(inputs, num_filters, 2)          # First Residual Block Group of 64 filters
+    x = residual_group(x, num_filters * 2, 1)           # Second Residual Block Group of 128 filters
+    x = residual_group(x, num_filters * 4, 1)           # Third Residual Block Group of 256 filters
+    out = residual_group(x, num_filters * 8, 1, False)  # Fourth Residual Block Group of 512 filters
+    return out
+
+
+def learner34(inputs, num_filters):
+    # Construct the Learner
+    x = residual_group(inputs, num_filters, 3)          # First Residual Block Group of 64 filters
+    x = residual_group(x, num_filters * 2, 3)           # Second Residual Block Group of 128 filters
+    x = residual_group(x, num_filters * 4, 5)           # Third Residual Block Group of 256 filters
+    out = residual_group(x, num_filters * 8, 2, False)  # Fourth Residual Block Group of 512 filters
     return out
 
 
