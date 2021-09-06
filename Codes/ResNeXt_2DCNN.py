@@ -84,9 +84,9 @@ def residual_group_bottleneck(inputs, num_filters, n_blocks, cardinality, conv=T
     # n_filters: number of filters
     # n_blocks : number of blocks in the group
     # conv     : flag to include the convolution block connector
-    out = []
-    for _ in range(n_blocks):
-        out = residual_block_bottleneck(inputs, num_filters, cardinality)
+    out = inputs
+    for i in range(n_blocks):
+        out = residual_block_bottleneck(out, num_filters, cardinality)
 
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
