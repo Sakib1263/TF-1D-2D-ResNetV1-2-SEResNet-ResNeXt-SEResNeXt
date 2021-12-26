@@ -8,6 +8,8 @@ Supported Models:
 4. ResNet101 [1] - ResNeXt101 [2]  
 5. ResNet152 [1] - ResNeXt152 [2]  
 
+Squeeze and Excite (SE) versions of ResNet and ResNeXt models are also available.
+
 ![ResNet Architecture Params](https://github.com/Sakib1263/ResNet-Model-Builder-KERAS/blob/main/Documents/Images/ResNet_Model.png "ResNet Architecture") 
 
 All the models contain BatchNormalization (BN) blocks after Convolutional blocks and before activation (ReLU), which is deviant from the original implementation to obtain better performance. Read more about BN in this paper [3].
