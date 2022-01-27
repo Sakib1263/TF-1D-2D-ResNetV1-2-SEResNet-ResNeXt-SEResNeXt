@@ -1,3 +1,8 @@
+# SE-ResNet models for Keras.
+# Reference for ResNets - [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf))
+# Reference for SE-Nets - [Squeeze-and-Excitation Networks](https://arxiv.org/pdf/1709.01507.pdf))
+
+
 import tensorflow as tf
 
 
