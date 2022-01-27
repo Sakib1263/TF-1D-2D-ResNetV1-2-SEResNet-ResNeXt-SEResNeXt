@@ -1,5 +1,6 @@
-# ResNeXt models for Keras.
-# Reference - [Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/pdf/1611.05431.pdf))
+# SE-ResNeXt models for Keras.
+# Reference for ResNext - [Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/pdf/1611.05431.pdf))
+# Reference for SE-Nets - [Squeeze-and-Excitation Networks](https://arxiv.org/pdf/1709.01507.pdf))
 
 
 import tensorflow as tf
@@ -41,13 +42,12 @@ def stem_bottleneck(inputs, num_filters):
     return pool
 
 
-def conv_block_bottleneck(inputs, num_filters):
+def conv_block(inputs, num_filters):
     # Construct Block of Convolutions without Pooling
     # x        : input into the block
     # n_filters: number of filters
     conv = Conv_2D_Block(inputs, num_filters, (3, 3), (2, 2))
-    conv = Conv_2D_Block(conv, num_filters, (3, 3), (2, 2))
-    conv = Conv_2D_Block(conv, num_filters, (3, 3), (2, 2))
+    conv = Conv_2D_Block(conv, num_filters, (3, 3), (1, 1))
 
     return conv
 
@@ -105,7 +105,7 @@ def residual_group_bottleneck(inputs, num_filters, n_blocks, cardinality, ratio,
 
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
-        out = conv_block_bottleneck(out, num_filters * 2)
+        out = conv_block(out, num_filters * 2)
 
     return out
 
