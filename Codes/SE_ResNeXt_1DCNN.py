@@ -1,5 +1,6 @@
-# ResNeXt models for Keras.
-# Reference - [Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/pdf/1611.05431.pdf))
+# SE-ResNeXt models for Keras.
+# Reference for ResNext - [Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/pdf/1611.05431.pdf))
+# Reference for SE-Nets - [Squeeze-and-Excitation Networks](https://arxiv.org/pdf/1709.01507.pdf))
 
 
 import tensorflow as tf
