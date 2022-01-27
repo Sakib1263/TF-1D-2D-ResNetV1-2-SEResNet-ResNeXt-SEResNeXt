@@ -1,3 +1,7 @@
+# ResNet models for Keras.
+# Reference for ResNet_v2 - [Identity Mappings in Deep Residual Networks](https://arxiv.org/pdf/1603.05027.pdf))
+
+
 import tensorflow as tf
 
 
