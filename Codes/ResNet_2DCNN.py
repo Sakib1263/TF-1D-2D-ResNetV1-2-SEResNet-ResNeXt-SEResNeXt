@@ -28,7 +28,7 @@ def conv_block(inputs, num_filters):
     # x        : input into the block
     # n_filters: number of filters
     conv = Conv_2D_Block(inputs, num_filters, 3, 2)
-    conv = Conv_2D_Block(conv, num_filters, 3, 2)
+    conv = Conv_2D_Block(conv, num_filters, 3, 1)
 
     return conv
 
@@ -76,17 +76,6 @@ def stem_bottleneck(inputs, num_filters):
     return pool
 
 
-def conv_block_bottleneck(inputs, num_filters):
-    # Construct Block of Convolutions without Pooling
-    # x        : input into the block
-    # n_filters: number of filters
-    conv = Conv_2D_Block(inputs, num_filters, 3, 2)
-    conv = Conv_2D_Block(conv, num_filters, 3, 2)
-    conv = Conv_2D_Block(conv, num_filters, 3, 2)
-
-    return conv
-
-
 def residual_block_bottleneck(inputs, num_filters):
     # Construct a Residual Block of Convolutions
     # x        : input into the block
@@ -113,7 +102,7 @@ def residual_group_bottleneck(inputs, n_filters, n_blocks, conv=True):
 
     # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
-        out = conv_block_bottleneck(out, n_filters * 2)
+        out = conv_block(out, n_filters * 2)
 
     return out
 
