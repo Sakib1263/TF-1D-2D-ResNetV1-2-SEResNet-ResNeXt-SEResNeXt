@@ -1,3 +1,6 @@
+# ResNet models for Keras.
+# Reference for ResNets - [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf))
+
 import tensorflow as tf
 
 
